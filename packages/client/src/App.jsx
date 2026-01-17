@@ -11,6 +11,7 @@ function App() {
   const [code, setCode] = useState(levels[0].defaultCode);
   const [pdfUrl, setPdfUrl] = useState(null);
   const [logs, setLogs] = useState('');
+  const [showLogs, setShowLogs] = useState(false);
   const [isCompiling, setIsCompiling] = useState(false);
   const [error, setError] = useState(null);
   const [passStatus, setPassStatus] = useState(null); // 'passed' | 'failed' | null
@@ -19,10 +20,13 @@ function App() {
 
   // Load level code when level changes
   useEffect(() => {
-    setCode(currentLevel.defaultCode);
+    // Replace placeholder __BS__ with actual backslash
+    const initialCode = currentLevel.defaultCode.replaceAll('__BS__', '\\');
+    setCode(initialCode);
     setPassStatus(null);
     setPdfUrl(null);
     setLogs('');
+    setShowLogs(false);
   }, [currentLevelIdx]);
 
   const handleEditorChange = (value) => {
@@ -33,9 +37,11 @@ function App() {
     setIsCompiling(true);
     setError(null);
     setPassStatus(null);
+    setShowLogs(false);
 
     try {
-      const jobName = `job_${Date.now()}`;
+      // Improved job naming: level_{id}_{timestamp}
+      const jobName = `level_${currentLevel.id}_${Date.now()}`;
       const response = await axios.post(`${API_BASE_URL}/api/compile`, {
         source: code,
         jobName: jobName
@@ -57,10 +63,12 @@ function App() {
       } else {
         setError(errorMsg || 'Compilation failed');
         setPassStatus('failed');
+        setShowLogs(true); // Only show logs on failure
       }
     } catch (err) {
       console.error('API Error:', err);
       setError('Failed to connect to backend server.');
+      setShowLogs(true); // Show logs (with error message) on network/server error
     } finally {
       setIsCompiling(false);
     }
@@ -116,7 +124,7 @@ function App() {
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         
         {/* Tutorial Sidebar (Left) */}
-        <div style={{ width: '300px', borderRight: '1px solid #ddd', display: 'flex', flexDirection: 'column', backgroundColor: '#fff' }}>
+        <div style={{ width: '600px', borderRight: '1px solid #ddd', display: 'flex', flexDirection: 'column', backgroundColor: '#fff' }}>
           <div style={{ padding: '20px', overflowY: 'auto', flex: 1 }}>
             <h3>{currentLevel.title}</h3>
             <ReactMarkdown>{currentLevel.content}</ReactMarkdown>
@@ -154,7 +162,7 @@ function App() {
         {/* Preview & Logs (Right) */}
         <div style={{ width: '40%', display: 'flex', flexDirection: 'column', backgroundColor: '#f5f5f5' }}>
           {/* PDF View */}
-          <div style={{ flex: 2, borderBottom: '1px solid #ddd', position: 'relative' }}>
+          <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
             {pdfUrl ? (
               <iframe 
                 src={pdfUrl} 
@@ -176,18 +184,27 @@ function App() {
             )}
           </div>
 
-          {/* Logs View */}
-          <div style={{ flex: 1, padding: '10px', overflow: 'auto', backgroundColor: '#1e1e1e', color: '#d4d4d4' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
-              <span style={{ color: '#61dafb', fontWeight: 'bold' }}>编译日志</span>
-              <button 
-                onClick={() => setLogs('')}
-                style={{ fontSize: '10px', background: 'none', border: '1px solid #444', color: '#aaa', cursor: 'pointer' }}
-              >清空</button>
+          {/* Logs View (Conditional) */}
+          {showLogs && (
+            <div style={{ 
+              height: '30%', 
+              padding: '10px', 
+              overflow: 'auto', 
+              backgroundColor: '#1e1e1e', 
+              color: '#d4d4d4',
+              borderTop: '1px solid #444'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
+                <span style={{ color: '#ff6b6b', fontWeight: 'bold' }}>编译错误 / 日志</span>
+                <button 
+                  onClick={() => setShowLogs(false)}
+                  style={{ fontSize: '10px', background: 'none', border: '1px solid #666', color: '#aaa', cursor: 'pointer' }}
+                >关闭</button>
+              </div>
+              {error && <div style={{ color: '#ff6b6b', marginBottom: '10px' }}><strong>错误:</strong> {error}</div>}
+              <pre style={{ margin: 0, fontSize: '11px', whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}>{logs}</pre>
             </div>
-            {error && <div style={{ color: '#ff6b6b', marginBottom: '10px' }}><strong>错误:</strong> {error}</div>}
-            <pre style={{ margin: 0, fontSize: '11px', whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}>{logs}</pre>
-          </div>
+          )}
         </div>
 
       </div>

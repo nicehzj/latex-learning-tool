@@ -25,14 +25,14 @@
     *   [x] 实现 `/api/compile` 接口
     *   [x] 静态资源服务配置
 
-*   [ ] **Phase 3: 前端核心实现 (Frontend Implementation)**
-    *   [ ] 集成 Monaco Editor
-    *   [ ] 编写 Workbench 界面
-    *   [ ] 连接后端 API 并展示 PDF
+*   [x] **Phase 3: 前端核心实现 (Frontend Implementation)**
+    *   [x] 集成 Monaco Editor
+    *   [x] 编写 Workbench 界面 (三栏布局：教程/编辑器/预览)
+    *   [x] 连接后端 API 并展示 PDF
 
 *   [ ] **Phase 4: 关卡内容填充 (Content Population)**
-    *   [ ] 将 12 个关卡配置化
-    *   [ ] 实现闯关判定逻辑
+    *   [ ] 将 12 个关卡配置化 (已完成 1-5 关)
+    *   [x] 实现闯关判定逻辑
 
 ## 3. 常用命令 (Commands)
 *   **启动所有**: `npm start` (需配置)
@@ -41,4 +41,4 @@
 *   **构建前端**: `npm run build -w packages/client`
 
 ## 4. 下一步计划 (Next Step)
-开始 **Phase 3**，前端核心实现：集成 Monaco Editor，搭建 Workbench 界面，并连接后端 API 展示编译结果。
+继续 **Phase 4**，完成剩余关卡 (6-12) 的内容填充，并根据需要优化前端体验（如增加关卡目录、重置代码功能等）。
