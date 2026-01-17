@@ -4,7 +4,7 @@ import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import { levels } from './levels/data';
 
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = 'http://127.0.0.1:5000';
 
 function App() {
   const [currentLevelIdx, setCurrentLevelIdx] = useState(0);
