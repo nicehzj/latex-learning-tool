@@ -71,7 +71,6 @@ latex_learning_tool/
 ├── packages/
 │   ├── client/      # 前端 React 应用
 │   └── server/      # 后端 Express 应用
-├── docs/            # 项目文档
 ├── install.bat      # Windows 一键安装脚本
 ├── install.sh       # macOS/Linux 一键安装脚本
 └── package.json     # 根目录配置 (Workspaces)
