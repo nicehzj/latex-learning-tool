@@ -160,12 +160,14 @@ ${BS}end{document}`,
     content: `
 为了让图片更专业，我们通常将其放在浮动体环境 ${BT}figure${BT} 中，并添加标题和引用标签。
 
+${BT}${BT}${BT}
 ${BS}begin{figure}[h]
-    ${BS}centering
-    ${BS}includegraphics[width=0.5${BS}textwidth]{example-image}
-    ${BS}caption{这是一个示例图片}
-    ${BS}label{fig:myimage}
+  ${BS}centering
+  ${BS}includegraphics[width=0.5${BS}textwidth]{example-image}
+  ${BS}caption{这是一个示例图片}
+  ${BS}label{fig:myimage}
 ${BS}end{figure}
+${BT}${BT}${BT}
 
 *   ${BT}${BS}centering${BT}: 让图片居中。
 *   ${BT}${BS}caption{...}${BT}: 生成 "Figure 1: ... " 标题。
@@ -221,9 +223,11 @@ LaTeX 在数学排版方面非常强大。
 *   **行间公式 (Display Math)**: 使用 ${BT}${BS}[ ... ${BS}]${BT} 或 ${BT}equation${BT} 环境。
 
 示例：
+${BT}${BT}${BT}
 ${BS}[
   x = ${BS}frac{-b ${BS}pm ${BS}sqrt{b^2 - 4ac}}{2a}
 ${BS}]
+${BT}${BT}${BT}
 
 **任务：**
 1. 写一个行内公式（例如爱因斯坦质能方程）。
@@ -268,6 +272,7 @@ ${BS}end{document}`,
     content: `
 表格使用 ${BT}tabular${BT} 环境。
 
+${BT}${BT}${BT}
 ${BS}begin{tabular}{|c|c|}
   ${BS}hline
   Item & Quantity ${BS}${BS}
@@ -276,6 +281,7 @@ ${BS}begin{tabular}{|c|c|}
   Orange & 5 ${BS}${BS}
   ${BS}hline
 ${BS}end{tabular}
+${BT}${BT}${BT}
 
 *   ${BT}{|c|c|}${BT}: 定义两列，居中对齐，两边有竖线。
 *   ${BT}&${BT}: 分隔单元格。
