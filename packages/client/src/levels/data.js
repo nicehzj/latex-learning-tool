@@ -160,7 +160,7 @@ ${BS}end{document}`,
     content: `
 为了让图片更专业，我们通常将其放在浮动体环境 ${BT}figure${BT} 中，并添加标题和引用标签。
 
-\begin{figure}[h]
+${BS}begin{figure}[h]
     ${BS}centering
     ${BS}includegraphics[width=0.5${BS}textwidth]{example-image}
     ${BS}caption{这是一个示例图片}
@@ -209,7 +209,7 @@ ${BS}begin{document}
   % TODO: Create enumerate list
 
 ${BS}end{document}`,
-    check: (code) => code.includes('begin{itemize}') && code.includes('begin{enumerate}') && code.match(/\item/g).length >= 2
+    check: (code) => code.includes('begin{itemize}') && code.includes('begin{enumerate}') && (code.match(/\item/g) || []).length >= 2
   },
   {
     id: 9,
@@ -221,9 +221,9 @@ LaTeX 在数学排版方面非常强大。
 *   **行间公式 (Display Math)**: 使用 ${BT}${BS}[ ... ${BS}]${BT} 或 ${BT}equation${BT} 环境。
 
 示例：
-\begin{equation*}
+${BS}[
   x = ${BS}frac{-b ${BS}pm ${BS}sqrt{b^2 - 4ac}}{2a}
-\end{equation*}
+${BS}]
 
 **任务：**
 1. 写一个行内公式（例如爱因斯坦质能方程）。
@@ -268,7 +268,7 @@ ${BS}end{document}`,
     content: `
 表格使用 ${BT}tabular${BT} 环境。
 
-\begin{tabular}{|c|c|}
+${BS}begin{tabular}{|c|c|}
   ${BS}hline
   Item & Quantity ${BS}${BS}
   ${BS}hline
