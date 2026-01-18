@@ -32,8 +32,8 @@
 打开终端 (Terminal/PowerShell)，运行以下命令：
 
 ```bash
-git clone <YOUR_GITHUB_REPO_URL>
-cd latex_learning_tool
+git clone https://github.com/nicehzj/latex-learning-tool.git
+cd latex-learning-tool
 ```
 
 ### 2. 安装依赖
@@ -42,13 +42,13 @@ cd latex_learning_tool
 *   **Windows**: 双击运行根目录下的 `install.bat`。
 *   **macOS / Linux**: 在终端运行 `sh install.sh`。
 
-**方式二：手动安装**
-在项目根目录下运行：
+**方式二：手动安装 (通用)**
+在项目根目录下运行以下命令（适用于 Windows / macOS / Linux）：
 
 ```bash
 npm install
 ```
-*(这将同时安装前端和后端的依赖)*
+*(这将自动识别您的操作系统并安装前端和后端的所有依赖)*
 
 ### 3. 启动项目
 运行一键启动命令：
