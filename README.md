@@ -37,6 +37,12 @@ cd latex_learning_tool
 ```
 
 ### 2. 安装依赖
+**方式一：自动安装脚本 (推荐)**
+
+*   **Windows**: 双击运行根目录下的 `install.bat`。
+*   **macOS / Linux**: 在终端运行 `sh install.sh`。
+
+**方式二：手动安装**
 在项目根目录下运行：
 
 ```bash
@@ -51,12 +57,11 @@ npm install
 npm start
 ```
 
-该命令会同时启动：
-*   **后端服务**: 运行在 `http://localhost:5000`
-*   **前端服务**: 运行在 `http://localhost:5173` (通常会自动打开浏览器)
+该命令会同时启动前后端服务。
+*   **注意**: 前端服务地址通常为 `http://localhost:3000` 或 `http://localhost:5173`，**具体请以终端输出的 Local 地址为准**。
 
 ### 4. 开始学习
-浏览器打开 `http://localhost:5173`，点击“开始第一关”即可开启您的 LaTeX 学习之旅！
+浏览器打开终端显示的 Local 地址（例如 `http://localhost:3000`），点击“开始第一关”即可开启您的 LaTeX 学习之旅！
 
 ## 📂 项目结构
 
@@ -64,16 +69,10 @@ npm start
 latex_learning_tool/
 ├── packages/
 │   ├── client/      # 前端 React 应用
-│   │   ├── src/
-│   │   │   ├── levels/   # 关卡数据配置
-│   │   │   ├── pages/    # 页面组件 (Home, Workbench)
-│   │   │   └── ...
 │   └── server/      # 后端 Express 应用
-│       ├── src/
-│       │   └── compiler.js # 核心编译逻辑
-│       └── temp/    # 编译过程产生的临时文件
 ├── docs/            # 项目文档
-├── GEMINI.md        # AI 开发日志
+├── install.bat      # Windows 一键安装脚本
+├── install.sh       # macOS/Linux 一键安装脚本
 └── package.json     # 根目录配置 (Workspaces)
 ```
 
