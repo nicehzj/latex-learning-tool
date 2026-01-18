@@ -46,7 +46,7 @@ app.post('/api/compile', async (req, res) => {
 
 // --- PROD: Catch-all handler for React Router ---
 // For any request that doesn't match API or Static, return index.html
-app.get('*', (req, res) => {
+app.get('(.*)', (req, res) => {
   res.sendFile(path.join(clientBuildPath, 'index.html'));
 });
 
