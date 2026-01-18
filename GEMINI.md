@@ -31,8 +31,8 @@
     *   [x] 连接后端 API 并展示 PDF
     *   [x] **UI/UX 升级**: 引入 Design System，优化布局、配色与交互反馈
 
-*   [ ] **Phase 4: 关卡内容填充 (Content Population)**
-    *   [ ] 将 12 个关卡配置化 (已完成 1-5 关)
+*   [x] **Phase 4: 关卡内容填充 (Content Population)**
+    *   [x] 将 12 个关卡配置化 (已完成 1-12 关)
     *   [x] 实现闯关判定逻辑
 
 ## 3. 常用命令 (Commands)
