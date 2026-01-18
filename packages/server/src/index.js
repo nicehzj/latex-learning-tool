@@ -12,13 +12,12 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Serve static files (PDFs) from the 'temp' directory
-// Frontend will access via http://localhost:5000/static/<filename>.pdf
 app.use('/static', express.static(path.join(__dirname, '..', 'temp')));
 
-// Test route
-app.get('/', (req, res) => {
-  res.send('LaTeX Learning Tool API is running!');
-});
+// --- PROD: Serve Frontend Static Files ---
+// Point to packages/client/dist
+const clientBuildPath = path.join(__dirname, '../../client/dist');
+app.use(express.static(clientBuildPath));
 
 // Compile endpoint
 app.post('/api/compile', async (req, res) => {
@@ -43,6 +42,12 @@ app.post('/api/compile', async (req, res) => {
       errorMsg: 'Internal server error.' 
     });
   }
+});
+
+// --- PROD: Catch-all handler for React Router ---
+// For any request that doesn't match API or Static, return index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(clientBuildPath, 'index.html'));
 });
 
 app.listen(port, () => {
