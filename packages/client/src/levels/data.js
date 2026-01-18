@@ -129,4 +129,192 @@ ${BS}end{document}`,
              code.includes(BS + 'emph');
     }
   },
+  {
+    id: 6,
+    title: "6. 插入图片",
+    content: `
+在 LaTeX 中插入图片需要使用 ${BT}graphicx${BT} 宏包。
+
+1.  **引入宏包**：在导言区（${BT}${BS}documentclass${BT} 之后）添加 ${BT}${BS}usepackage{graphicx}${BT}。
+2.  **插入图片**：在正文中使用 ${BT}${BS}includegraphics{filename}${BT}。
+
+通常我们还会指定图片大小，例如：${BT}${BS}includegraphics[width=0.5${BS}textwidth]{filename}${BT}（即页面宽度的 50%）。
+
+**任务：**
+1. 引入 ${BT}graphicx${BT} 宏包。
+2. 插入一张名为 "example-image" 的图片（这是 LaTeX 内置的示例图片）。
+`,
+    defaultCode: `${BS}documentclass{article}
+% TODO: Include graphicx package
+
+${BS}begin{document}
+  Here is an image:
+  % TODO: Include 'example-image'
+  
+${BS}end{document}`,
+    check: (code) => code.includes('usepackage{graphicx}') && code.includes('includegraphics')
+  },
+  {
+    id: 7,
+    title: "7. 图片标题、标签与引用",
+    content: `
+为了让图片更专业，我们通常将其放在浮动体环境 ${BT}figure${BT} 中，并添加标题和引用标签。
+
+\begin{figure}[h]
+    ${BS}centering
+    ${BS}includegraphics[width=0.5${BS}textwidth]{example-image}
+    ${BS}caption{这是一个示例图片}
+    ${BS}label{fig:myimage}
+${BS}end{figure}
+
+*   ${BT}${BS}centering${BT}: 让图片居中。
+*   ${BT}${BS}caption{...}${BT}: 生成 "Figure 1: ... " 标题。
+*   ${BT}${BS}label{...}${BT}: 设置一个内部标签用于引用。
+*   在文中引用时使用 ${BT}${BS}ref{fig:myimage}${BT}。
+
+**任务：**
+创建一个包含标题和标签的 figure 环境，并在文中引用它。
+`,
+    defaultCode: `${BS}documentclass{article}
+${BS}usepackage{graphicx}
+
+${BS}begin{document}
+  As seen in Figure ${BS}ref{fig:example} ...
+
+  % TODO: Create a figure environment with caption and label
+  
+${BS}end{document}`,
+    check: (code) => code.includes('begin{figure}') && code.includes('caption') && code.includes('label')
+  },
+  {
+    id: 8,
+    title: "8. 创建列表",
+    content: `
+LaTeX 提供了两种常用的列表环境：
+
+1.  **无序列表 (Unordered List)**: 使用 ${BT}itemize${BT} 环境。
+2.  **有序列表 (Ordered List)**: 使用 ${BT}enumerate${BT} 环境。
+
+列表中的每一项都用 ${BT}${BS}item${BT} 开头。
+
+**任务：**
+创建一个 ${BT}itemize${BT} 列表和一个 ${BT}enumerate${BT} 列表，每种至少包含两个列表项。
+`,
+    defaultCode: `${BS}documentclass{article}
+${BS}begin{document}
+  Unordered list: 
+  % TODO: Create itemize list
+
+  Ordered list:
+  % TODO: Create enumerate list
+
+${BS}end{document}`,
+    check: (code) => code.includes('begin{itemize}') && code.includes('begin{enumerate}') && code.match(/\item/g).length >= 2
+  },
+  {
+    id: 9,
+    title: "9. 数学公式",
+    content: `
+LaTeX 在数学排版方面非常强大。
+
+*   **行内公式 (Inline Math)**: 使用两个美元符号包裹，如 ${BT}$E=mc^2$${BT}。
+*   **行间公式 (Display Math)**: 使用 ${BT}${BS}[ ... ${BS}]${BT} 或 ${BT}equation${BT} 环境。
+
+示例：
+\begin{equation*}
+  x = ${BS}frac{-b ${BS}pm ${BS}sqrt{b^2 - 4ac}}{2a}
+\end{equation*}
+
+**任务：**
+1. 写一个行内公式（例如爱因斯坦质能方程）。
+2. 写一个复杂的行间公式（例如二次方程求根公式）。
+`,
+    defaultCode: `${BS}documentclass{article}
+${BS}begin{document}
+  Inline math: % TODO
+
+  Display math:
+  % TODO
+  
+${BS}end{document}`,
+    check: (code) => code.includes('$') && (code.includes(BS + '[') || code.includes('equation'))
+  },
+  {
+    id: 10,
+    title: "10. 文档结构",
+    content: `
+长文档需要清晰的结构。使用以下命令来划分章节：
+
+*   ${BT}${BS}section{Title}${BT}: 一级标题
+*   ${BT}${BS}subsection{Title}${BT}: 二级标题
+*   ${BT}${BS}subsubsection{Title}${BT}: 三级标题
+
+**任务：**
+创建一个文档，至少包含一个 Section 和一个 Subsection。
+`,
+    defaultCode: `${BS}documentclass{article}
+${BS}begin{document}
+  % TODO: Add section
+  Some text.
+
+  % TODO: Add subsection
+  More text.
+${BS}end{document}`,
+    check: (code) => code.includes(BS + 'section') && code.includes(BS + 'subsection')
+  },
+  {
+    id: 11,
+    title: "11. 创建表格",
+    content: `
+表格使用 ${BT}tabular${BT} 环境。
+
+\begin{tabular}{|c|c|}
+  ${BS}hline
+  Item & Quantity ${BS}${BS}
+  ${BS}hline
+  Apple & 10 ${BS}${BS}
+  Orange & 5 ${BS}${BS}
+  ${BS}hline
+${BS}end{tabular}
+
+*   ${BT}{|c|c|}${BT}: 定义两列，居中对齐，两边有竖线。
+*   ${BT}&${BT}: 分隔单元格。
+*   ${BT}${BS}${BS}${BT}: 换行。
+*   ${BT}${BS}hline${BT}: 横线。
+
+**任务：**
+创建一个 2x2 或更大的表格，并带有边框。
+`,
+    defaultCode: `${BS}documentclass{article}
+${BS}begin{document}
+  % TODO: Create a table
+  
+${BS}end{document}`,
+    check: (code) => code.includes('begin{tabular}') && code.includes('&') && code.includes(BS+BS)
+  },
+  {
+    id: 12,
+    title: "12. 自动生成目录",
+    content: `
+有了章节结构后，生成目录 (Table of Contents) 非常简单。
+
+只需在文档开头使用 ${BT}${BS}tableofcontents${BT} 命令。
+
+*注意：在本地编译时通常需要运行两次 LaTeX 才能生成目录。在这个在线环境中，如果目录没有立即显示，请尝试再次点击运行，或者确信只要代码正确即可通过。*
+
+**任务：**
+在文档开头添加目录，并确保文档中有几个章节。
+`,
+    defaultCode: `${BS}documentclass{article}
+${BS}begin{document}
+  % TODO: Add Table of Contents here
+
+  ${BS}section{Introduction}
+  This is the introduction.
+
+  ${BS}section{Main Part}
+  This is the main part.
+${BS}end{document}`,
+    check: (code) => code.includes('tableofcontents') && code.includes('section')
+  }
 ];
