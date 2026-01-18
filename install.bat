@@ -52,6 +52,7 @@ if %errorlevel% neq 0 (
     echo The backend requires TeX Live to compile PDF files.
     echo.
     echo Please install TeX Live manually: https://tug.org/texlive/windows.html
+    echo (国内镜像加速: https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/Images/)
     echo (Auto-installation of TeX Live is too large/complex for this script)
     echo.
     echo You can still proceed to install dependencies, but compilation will fail.

@@ -22,8 +22,9 @@
 1.  **Node.js** (v16 或更高版本)
     *   下载地址: [https://nodejs.org/](https://nodejs.org/)
 2.  **TeX Live 发行版** (必须安装，因为后端需要调用 `xelatex` 和 `bibtex` 命令)
-    *   **Windows**: 推荐安装 [TeX Live](https://tug.org/texlive/windows.html) 或 [MiKTeX](https://miktex.org/).
-    *   **macOS**: 推荐安装 [MacTeX](https://tug.org/mactex/).
+    *   **Windows**: 推荐安装 [TeX Live](https://tug.org/texlive/windows.html) 或 [MiKTeX](https://miktex.org/)。
+        *   *国内下载加速 (清华源)*: [TeX Live 镜像下载](https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/Images/)
+    *   **macOS**: 推荐安装 [MacTeX](https://tug.org/mactex/)。
     *   *验证方法*: 在终端输入 `xelatex --version`，如果有输出版本信息则表示安装成功。
 
 ## 🚀 快速开始 (Installation & Usage)
