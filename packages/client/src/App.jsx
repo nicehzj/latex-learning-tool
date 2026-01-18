@@ -142,9 +142,8 @@ function App() {
             </button>
             <button 
               className={`btn ${passStatus === 'passed' ? 'btn-primary' : 'btn-outline'}`}
-              disabled={currentLevelIdx === levels.length - 1 || passStatus !== 'passed'}
+              disabled={currentLevelIdx === levels.length - 1}
               onClick={() => setCurrentLevelIdx(i => i + 1)}
-              title={passStatus !== 'passed' ? "请先通过当前关卡" : ""}
             >
               下一关 ➡️
             </button>
