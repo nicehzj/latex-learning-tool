@@ -40,8 +40,34 @@ const runXelatexPass = (jobName, inputPath) => {
 };
 
 /**
+ * Helper function to run bibtex.
+ * @returns {Promise<{code: number, stdout: string, stderr: string, error?: Error}>}
+ */
+const runBibtexPass = (jobName) => {
+  return new Promise((resolve) => {
+    // bibtex needs to run in the temp directory to find the .aux file
+    const args = [jobName];
+    const child = spawn('bibtex', args, { cwd: TEMP_DIR });
+    
+    let stdout = '';
+    let stderr = '';
+
+    child.stdout.on('data', (data) => { stdout += data.toString(); });
+    child.stderr.on('data', (data) => { stderr += data.toString(); });
+
+    child.on('error', (err) => {
+      resolve({ error: err, stdout, stderr, code: -1 });
+    });
+
+    child.on('close', (code) => {
+      resolve({ code, stdout, stderr });
+    });
+  });
+};
+
+/**
  * Compiles LaTeX source code to PDF.
- * Runs xelatex twice to ensure references and TOC are resolved.
+ * Runs full chain: xelatex -> bibtex -> xelatex -> xelatex to resolve refs and bibliography.
  * @param {string} source - The LaTeX source code.
  * @param {string} jobName - Unique identifier for this compilation job.
  * @returns {Promise<{success: boolean, pdfUrl?: string, logs: string, errorMsg?: string}>}
@@ -60,34 +86,33 @@ const compileTeX = async (source, jobName) => {
     };
   }
 
-  // 2. First Pass
+  // 2. First Pass: xelatex (generates .aux)
   let result = await runXelatexPass(jobName, inputPath);
+  if (result.error) return { success: false, logs: result.stdout + '\n' + result.stderr, errorMsg: result.error.message };
+
+  // 3. BibTeX Pass (processes .bib if .aux contains citation data)
+  // We blindly run bibtex; if no bibliography is used, it will just fail/warn harmlessly, 
+  // or we can check the source for \bibliography command to optimize.
+  // For robustness, let's try running it.
+  const bibResult = await runBibtexPass(jobName);
   
-  if (result.error) {
-    return {
-      success: false,
-      logs: result.stdout + '\n' + result.stderr,
-      errorMsg: `Failed to start xelatex: ${result.error.message}`
-    };
-  }
-
-  // If first pass failed fundamentally (e.g. fatal syntax error), we might skip the second,
-  // but in nonstopmode xelatex often returns 0 even with errors.
-  // We'll proceed to second pass unless the PDF wasn't created at all, which suggests a crash.
-  // However, for references to resolve, we just blindly run it again usually.
-
-  // 3. Second Pass (to resolve references/TOC)
+  // 4. Second Pass: xelatex (incorporates .bbl)
   result = await runXelatexPass(jobName, inputPath);
 
-  // 4. Check for PDF
+  // 5. Third Pass: xelatex (resolves cross-references)
+  result = await runXelatexPass(jobName, inputPath);
+
+  // 6. Check for PDF
   const pdfFilename = `${jobName}.pdf`;
   const pdfPath = path.join(TEMP_DIR, pdfFilename);
 
   if (fs.existsSync(pdfPath)) {
+    // Combine logs from xelatex and bibtex for debugging
+    const fullLogs = `--- Xelatex Log ---\n${result.stdout}\n\n--- Bibtex Log ---\n${bibResult.stdout}\n${bibResult.stderr}`;
     return {
       success: true,
       pdfUrl: `/static/${pdfFilename}`,
-      logs: result.stdout // Return logs from the final pass
+      logs: fullLogs
     };
   } else {
     return {

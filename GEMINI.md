@@ -24,6 +24,7 @@
     *   [x] 实现 `compiler.js` (调用 `xelatex`)
     *   [x] 实现 `/api/compile` 接口
     *   [x] 静态资源服务配置
+    *   [x] **高级编译**: 支持双重编译及 BibTeX 完整工具链 (xelatex -> bibtex -> xelatex)
 
 *   [x] **Phase 3: 前端核心实现 (Frontend Implementation)**
     *   [x] 集成 Monaco Editor
@@ -32,8 +33,15 @@
     *   [x] **UI/UX 升级**: 引入 Design System，优化布局、配色与交互反馈
 
 *   [x] **Phase 4: 关卡内容填充 (Content Population)**
-    *   [x] 将 12 个关卡配置化 (已完成 1-12 关)
+    *   [x] 将 12 个关卡配置化 (已完成 1-15 关，新增引用与 BibTeX 进阶)
     *   [x] 实现闯关判定逻辑
+    *   [x] **教程优化**: 优化了数学公式、表格的视觉展示，采用“看图写代码”模式
+
+*   [x] **Phase 5: 导航与持久化 (Navigation & Persistence)**
+    *   [x] 引入 `react-router-dom` 实现路由管理
+    *   [x] **Home 界面**: 全新设计的主页，支持关卡网格展示与状态指示 (✅/🔵/🔒)
+    *   [x] **进度记忆**: 使用 `localStorage` 记录用户最高通关记录
+    *   [x] **会话管理**: 优化编译 Session ID，确保目录和引用稳定生成
 
 ## 3. 常用命令 (Commands)
 *   **一键启动**: `npm start` (同时启动前后端服务)
@@ -42,4 +50,7 @@
 *   **构建前端**: `npm run build -w packages/client`
 
 ## 4. 下一步计划 (Next Step)
-继续 **Phase 4**，按照 Overleaf 教程风格填充剩余关卡 (6-12) 的内容，并持续优化用户交互体验。
+项目核心功能已全部完成！下一步可以考虑：
+*   添加更多高级关卡（如 Beamer 幻灯片、绘图 TikZ）。
+*   部署到线上环境（Docker化）。
+*   添加用户登录系统（对接数据库）。
