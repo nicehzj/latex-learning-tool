@@ -160,7 +160,7 @@ ${BS}end{document}`,
     content: `
 为了让图片更专业，我们通常将其放在浮动体环境 ${BT}figure${BT} 中，并添加标题和引用标签。
 
-${BT}${BT}${BT}
+${BT}${BT}${BT}latex
 ${BS}begin{figure}[h]
   ${BS}centering
   ${BS}includegraphics[width=0.5${BS}textwidth]{example-image}
@@ -172,10 +172,13 @@ ${BT}${BT}${BT}
 *   ${BT}${BS}centering${BT}: 让图片居中。
 *   ${BT}${BS}caption{...}${BT}: 生成 "Figure 1: ... " 标题。
 *   ${BT}${BS}label{...}${BT}: 设置一个内部标签用于引用。
-*   在文中引用时使用 ${BT}${BS}ref{fig:myimage}${BT}。
+*   在文中引用时使用 ${BT}${BS}ref{...}${BT}，其中的参数必须与 ${BT}${BS}label${BT} 中的内容完全一致。
 
 **任务：**
-创建一个包含标题和标签的 figure 环境，并在文中引用它。
+1. 创建一个 ${BT}figure${BT} 环境。
+2. 为图片设置标题（caption）为 "A sample image"。
+3. 为图片设置标签（label）为 "fig:example"。
+4. 在正文中使用 ${BT}${BS}ref{fig:example}${BT} 进行引用（编辑器中已提供部分代码）。
 `,
     defaultCode: `${BS}documentclass{article}
 ${BS}usepackage{graphicx}
@@ -186,7 +189,7 @@ ${BS}begin{document}
   % TODO: Create a figure environment with caption and label
   
 ${BS}end{document}`,
-    check: (code) => code.includes('begin{figure}') && code.includes('caption') && code.includes('label')
+    check: (code) => code.includes('begin{figure}') && code.includes('caption{A sample image}') && code.includes('label{fig:example}') && code.includes('ref{fig:example}')
   },
   {
     id: 8,
@@ -211,7 +214,7 @@ ${BS}begin{document}
   % TODO: Create enumerate list
 
 ${BS}end{document}`,
-    check: (code) => code.includes('begin{itemize}') && code.includes('begin{enumerate}') && (code.match(/\item/g) || []).length >= 2
+    check: (code) => code.includes('begin{itemize}') && code.includes('begin{enumerate}') && (code.match(/\\item/g) || []).length >= 2
   },
   {
     id: 9,
@@ -223,7 +226,7 @@ LaTeX 在数学排版方面非常强大。
 *   **行间公式 (Display Math)**: 使用 ${BT}${BS}[ ... ${BS}]${BT} 或 ${BT}equation${BT} 环境。
 
 示例：
-${BT}${BT}${BT}
+${BT}${BT}${BT}latex
 ${BS}[
   x = ${BS}frac{-b ${BS}pm ${BS}sqrt{b^2 - 4ac}}{2a}
 ${BS}]
@@ -272,7 +275,7 @@ ${BS}end{document}`,
     content: `
 表格使用 ${BT}tabular${BT} 环境。
 
-${BT}${BT}${BT}
+${BT}${BT}${BT}latex
 ${BS}begin{tabular}{|c|c|}
   ${BS}hline
   Item & Quantity ${BS}${BS}
