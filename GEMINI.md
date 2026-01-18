@@ -12,7 +12,7 @@
     *   `docs/Agent_Prompt.md`: 开发指令
 
 ## 2. 当前进度 (Progress)
-**日期**: 2026-01-17
+**日期**: 2026-01-18
 
 *   [x] **Phase 1: 项目初始化 (Project Initialization)**
     *   [x] 根目录 `package.json` Workspaces 配置
@@ -29,16 +29,17 @@
     *   [x] 集成 Monaco Editor
     *   [x] 编写 Workbench 界面 (三栏布局：教程/编辑器/预览)
     *   [x] 连接后端 API 并展示 PDF
+    *   [x] **UI/UX 升级**: 引入 Design System，优化布局、配色与交互反馈
 
 *   [ ] **Phase 4: 关卡内容填充 (Content Population)**
     *   [ ] 将 12 个关卡配置化 (已完成 1-5 关)
     *   [x] 实现闯关判定逻辑
 
 ## 3. 常用命令 (Commands)
-*   **启动所有**: `npm start` (需配置)
+*   **一键启动**: `npm start` (同时启动前后端服务)
 *   **启动后端**: `cd packages/server && npm run dev`
 *   **启动前端**: `cd packages/client && npm run dev`
 *   **构建前端**: `npm run build -w packages/client`
 
 ## 4. 下一步计划 (Next Step)
-继续 **Phase 4**，完成剩余关卡 (6-12) 的内容填充，并根据需要优化前端体验（如增加关卡目录、重置代码功能等）。
+继续 **Phase 4**，按照 Overleaf 教程风格填充剩余关卡 (6-12) 的内容，并持续优化用户交互体验。

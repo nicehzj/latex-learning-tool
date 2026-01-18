@@ -40,7 +40,6 @@ function App() {
     setShowLogs(false);
 
     try {
-      // Improved job naming: level_{id}_{timestamp}
       const jobName = `level_${currentLevel.id}_${Date.now()}`;
       const response = await axios.post(`${API_BASE_URL}/api/compile`, {
         source: code,
@@ -54,7 +53,6 @@ function App() {
       if (success) {
         setPdfUrl(`${API_BASE_URL}${returnedPdfUrl}?t=${Date.now()}`);
         
-        // Check if user passed the level logic
         if (currentLevel.check(code)) {
           setPassStatus('passed');
         } else {
@@ -63,87 +61,101 @@ function App() {
       } else {
         setError(errorMsg || 'Compilation failed');
         setPassStatus('failed');
-        setShowLogs(true); // Only show logs on failure
+        setShowLogs(true);
       }
     } catch (err) {
       console.error('API Error:', err);
       setError('Failed to connect to backend server.');
-      setShowLogs(true); // Show logs (with error message) on network/server error
+      setShowLogs(true);
     } finally {
       setIsCompiling(false);
     }
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: 'sans-serif' }}>
+    <div className="app-container">
       {/* Header */}
-      <header style={{ 
-        padding: '10px 20px', 
-        backgroundColor: '#282c34', 
-        color: 'white', 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-        zIndex: 10
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <h2 style={{ margin: 0 }}>LaTeX 闯关助手</h2>
+      <header className="app-header">
+        <div className="flex items-center gap-4">
+          <h1 className="brand-title">
+            <span>🚀</span> LaTeX 闯关助手
+          </h1>
           <select 
+            className="level-select"
             value={currentLevelIdx} 
             onChange={(e) => setCurrentLevelIdx(parseInt(e.target.value))}
-            style={{ padding: '5px', borderRadius: '4px' }}
           >
             {levels.map((lvl, index) => (
-              <option key={lvl.id} value={index}>{lvl.title}</option>
+              <option key={lvl.id} value={index}>
+                Level {index + 1}: {lvl.title}
+              </option>
             ))}
           </select>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          {passStatus === 'passed' && <span style={{ color: '#4caf50', fontWeight: 'bold' }}>✅ 闯关成功！</span>}
-          {passStatus === 'failed' && <span style={{ color: '#ff6b6b', fontWeight: 'bold' }}>❌ 未达标，再试一次</span>}
+        
+        <div className="flex items-center gap-4">
+          {passStatus === 'passed' && (
+            <span className="status-badge status-passed">
+              <span>✅</span> 闯关成功
+            </span>
+          )}
+          {passStatus === 'failed' && (
+            <span className="status-badge status-failed">
+              <span>❌</span> 未达标
+            </span>
+          )}
+          
           <button 
+            className="btn btn-primary"
             onClick={handleCompile} 
             disabled={isCompiling}
-            style={{
-              padding: '8px 20px',
-              backgroundColor: isCompiling ? '#ccc' : '#61dafb',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: isCompiling ? 'not-allowed' : 'pointer',
-              fontWeight: 'bold',
-              color: '#282c34'
-            }}
           >
-            {isCompiling ? '编译中...' : '运行并校验'}
+            {isCompiling ? (
+              <>
+                <span>⏳</span> 编译中...
+              </>
+            ) : (
+              <>
+                <span>▶️</span> 运行并校验
+              </>
+            )}
           </button>
         </div>
       </header>
 
       {/* Main Content */}
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+      <div className="main-content">
         
         {/* Tutorial Sidebar (Left) */}
-        <div style={{ width: '600px', borderRight: '1px solid #ddd', display: 'flex', flexDirection: 'column', backgroundColor: '#fff' }}>
-          <div style={{ padding: '20px', overflowY: 'auto', flex: 1 }}>
+        <div className="tutorial-pane">
+          <div className="tutorial-content markdown-body">
             <h3>{currentLevel.title}</h3>
             <ReactMarkdown>{currentLevel.content}</ReactMarkdown>
           </div>
-          <div style={{ padding: '15px', borderTop: '1px solid #eee', textAlign: 'center' }}>
+          <div className="tutorial-footer">
             <button 
+              className="btn btn-outline"
               disabled={currentLevelIdx === 0}
               onClick={() => setCurrentLevelIdx(i => i - 1)}
-              style={{ marginRight: '10px' }}
-            >上一关</button>
+            >
+              ⬅️ 上一关
+            </button>
             <button 
+              className={`btn ${passStatus === 'passed' ? 'btn-primary' : 'btn-outline'}`}
               disabled={currentLevelIdx === levels.length - 1 || passStatus !== 'passed'}
               onClick={() => setCurrentLevelIdx(i => i + 1)}
-            >下一关</button>
+              title={passStatus !== 'passed' ? "请先通过当前关卡" : ""}
+            >
+              下一关 ➡️
+            </button>
           </div>
         </div>
 
         {/* Editor (Middle) */}
-        <div style={{ flex: 1, borderRight: '1px solid #ddd' }}>
+        <div className="editor-pane">
+          <div className="editor-header">
+            main.tex
+          </div>
           <Editor
             height="100%"
             defaultLanguage="latex"
@@ -155,54 +167,47 @@ function App() {
               minimap: { enabled: false },
               scrollBeyondLastLine: false,
               automaticLayout: true,
+              fontFamily: "'JetBrains Mono', Consolas, monospace",
+              padding: { top: 16 }
             }}
           />
         </div>
 
         {/* Preview & Logs (Right) */}
-        <div style={{ width: '40%', display: 'flex', flexDirection: 'column', backgroundColor: '#f5f5f5' }}>
-          {/* PDF View */}
-          <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+        <div className="preview-pane">
+          <div className="pdf-container">
             {pdfUrl ? (
               <iframe 
                 src={pdfUrl} 
-                style={{ width: '100%', height: '100%', border: 'none' }}
+                className="pdf-frame"
                 title="PDF Preview"
               />
             ) : (
-              <div style={{ 
-                height: '100%', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                color: '#666',
-                textAlign: 'center',
-                padding: '20px'
-              }}>
-                {isCompiling ? '正在生成 PDF...' : (error ? '编译出错' : '点击“运行”查看 PDF 预览')}
+              <div className="empty-state">
+                <div className="empty-state-icon">📄</div>
+                <div>
+                  {isCompiling ? '正在生成 PDF...' : (error ? '编译出错' : '点击“运行”查看 PDF 预览')}
+                </div>
               </div>
             )}
           </div>
 
           {/* Logs View (Conditional) */}
           {showLogs && (
-            <div style={{ 
-              height: '30%', 
-              padding: '10px', 
-              overflow: 'auto', 
-              backgroundColor: '#1e1e1e', 
-              color: '#d4d4d4',
-              borderTop: '1px solid #444'
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
-                <span style={{ color: '#ff6b6b', fontWeight: 'bold' }}>编译错误 / 日志</span>
+            <div className="logs-panel">
+              <div className="logs-header">
+                <span style={{ color: '#ef4444' }}>⚠️ 编译错误 / 日志</span>
                 <button 
+                  className="close-logs-btn"
                   onClick={() => setShowLogs(false)}
-                  style={{ fontSize: '10px', background: 'none', border: '1px solid #666', color: '#aaa', cursor: 'pointer' }}
-                >关闭</button>
+                >
+                  ✕
+                </button>
               </div>
-              {error && <div style={{ color: '#ff6b6b', marginBottom: '10px' }}><strong>错误:</strong> {error}</div>}
-              <pre style={{ margin: 0, fontSize: '11px', whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}>{logs}</pre>
+              <div className="logs-content">
+                {error && <div style={{ color: '#ef4444', marginBottom: '8px' }}><strong>Error:</strong> {error}</div>}
+                {logs}
+              </div>
             </div>
           )}
         </div>
