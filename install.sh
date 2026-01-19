@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# 定义颜色 (可选，为了更好看)
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
 echo "=========================================="
 echo "LaTeX Learning Tool - One-Click Installer"
 echo "=========================================="
@@ -7,7 +13,7 @@ echo
 
 # 1. Check for Node.js
 if ! command -v node &> /dev/null; then
-    echo "[WARNING] Node.js is not installed!"
+    echo -e "${YELLOW}[WARNING] Node.js is not installed!${NC}"
     echo "Attempting to auto-install..."
     echo
 
@@ -17,18 +23,18 @@ if ! command -v node &> /dev/null; then
             echo "Homebrew detected. Installing Node.js..."
             brew install node
         else
-            echo "[ERROR] Homebrew not found. Cannot auto-install."
+            echo -e "${RED}[ERROR] Homebrew not found. Cannot auto-install.${NC}"
             echo "Please manually install Node.js from https://nodejs.org/"
             exit 1
         fi
     elif [ -f /etc/debian_version ]; then
         # Debian/Ubuntu
         echo "Debian/Ubuntu detected. Installing Node.js (requires sudo)..."
-        # Using default repo nodejs might be old, but it's safest for a simple script
+        # 尝试更新源并安装
         sudo apt-get update
         sudo apt-get install -y nodejs npm
     else
-        echo "[ERROR] Unsupported OS for auto-install."
+        echo -e "${RED}[ERROR] Unsupported OS for auto-install.${NC}"
         echo "Please manually install Node.js from https://nodejs.org/"
         exit 1
     fi
@@ -36,22 +42,22 @@ if ! command -v node &> /dev/null; then
     # Verify installation
     if ! command -v node &> /dev/null; then
         echo
-        echo "[ERROR] Auto-installation failed. Please install manually."
+        echo -e "${RED}[ERROR] Auto-installation failed. Please install manually.${NC}"
         exit 1
     else
         echo
-        echo "[SUCCESS] Node.js installed!"
+        echo -e "${GREEN}[SUCCESS] Node.js installed!${NC}"
         echo
     fi
 else
-    echo "[OK] Node.js found."
+    echo -e "${GREEN}[OK] Node.js found.${NC}"
     node --version
     echo
 fi
 
 # 2. Check for xelatex
 if ! command -v xelatex &> /dev/null; then
-    echo "[WARNING] xelatex command not found!"
+    echo -e "${YELLOW}[WARNING] xelatex command not found!${NC}"
     echo "The backend requires a TeX distribution to compile PDF files."
     echo
     if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -62,7 +68,7 @@ if ! command -v xelatex &> /dev/null; then
     echo "You can still run the app, but compilation will fail."
     echo
 else
-    echo "[OK] TeX environment (xelatex) found."
+    echo -e "${GREEN}[OK] TeX environment (xelatex) found.${NC}"
     xelatex --version | grep -i "XeTeX" | head -n 1
     echo
 fi
@@ -74,11 +80,11 @@ npm install
 if [ $? -eq 0 ]; then
     echo
     echo "=========================================="
-    echo "Installation Complete!"
+    echo -e "${GREEN}Installation Complete!${NC}"
     echo "You can now run the project using: npm start"
     echo "=========================================="
 else
     echo
-    echo "[ERROR] npm install failed."
+    echo -e "${RED}[ERROR] npm install failed.${NC}"
     exit 1
 fi
