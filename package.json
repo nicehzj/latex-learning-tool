@@ -7,11 +7,14 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "npm run start --workspaces",
-    "dev": "npm run dev --workspaces"
+    "start": "concurrently --kill-others -n \"SERVER,CLIENT\" -c \"bgBlue.bold,bgGreen.bold\" \"npm run start --workspace=server\" \"npm run start --workspace=client\"",
+    "install:all": "npm install"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
 }
