@@ -1,5 +1,8 @@
 @echo off
 setlocal
+:: 切换编码页为UTF-8，防止中文乱码
+chcp 65001 >nul
+
 echo ==========================================
 echo LaTeX Learning Tool - One-Click Installer
 echo ==========================================
@@ -10,7 +13,7 @@ where node >nul 2>nul
 if %errorlevel% neq 0 (
     echo [WARNING] Node.js is not installed!
     echo.
-    echo Attempting to install Node.js LTS via Windows Package Manager (winget)...
+    echo Attempting to install Node.js LTS via Windows Package Manager - winget...
     
     where winget >nul 2>nul
     if %errorlevel% neq 0 (
@@ -20,7 +23,7 @@ if %errorlevel% neq 0 (
         exit /b 1
     )
 
-    :: Install Node.js
+    REM Install Node.js (REM used for safety inside blocks)
     winget install -e --id OpenJS.NodeJS.LTS
     
     if %errorlevel% neq 0 (
@@ -34,7 +37,7 @@ if %errorlevel% neq 0 (
     echo.
     echo [SUCCESS] Node.js installed successfully!
     echo ========================================================
-    echo IMPORTANT: You MUST restart this script (close and reopen)
+    echo IMPORTANT: You MUST restart this script close and reopen
     echo for the new environment variables to take effect.
     echo ========================================================
     pause
@@ -52,14 +55,15 @@ if %errorlevel% neq 0 (
     echo The backend requires TeX Live to compile PDF files.
     echo.
     echo Please install TeX Live manually: https://tug.org/texlive/windows.html
-    echo (国内镜像加速: https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/Images/)
-    echo (Auto-installation of TeX Live is too large/complex for this script)
+    REM 注意：下面这里把圆括号改成了方括号，防止脚本报错
+    echo [Mirror: https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/Images/]
+    echo [Auto-installation of TeX Live is too large/complex for this script]
     echo.
     echo You can still proceed to install dependencies, but compilation will fail.
     echo.
     pause
 ) else (
-    echo [OK] TeX environment (xelatex) found.
+    echo [OK] TeX environment xelatex found.
     xelatex --version | findstr /b "XeTeX"
     echo.
 )
