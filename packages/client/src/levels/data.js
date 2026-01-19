@@ -506,9 +506,7 @@ ${BS}end{document}`,
     id: 15,
     title: "15. 进阶：BibTeX 与 Google Scholar",
     content: `
-手动编写 
-	bibitem
-	非常繁琐。在实际项目中，我们通常使用 **BibTeX** 自动化管理文献。
+手动编写 ${BT}${BS}bibitem${BT} 非常繁琐。在实际项目中，我们通常使用 **BibTeX** 自动化管理文献。
 
 ### 1. 参考文献样式 (Bibliography Styles)
 通过 ${BT}${BS}bibliographystyle{...}${BT}，你可以一键更换整篇文档的引用格式：
@@ -523,17 +521,11 @@ ${BS}end{document}`,
 ### 2. Google Scholar 工作流
 1.  **查找**: 在 [Google Scholar](https://scholar.google.com) 搜索文献。
 2.  **导出**: 点击 "引用 (Cite)" -> "BibTeX"，复制生成的代码。
-3.  **保存**: 将代码保存为 
-	.bib
-	文件（例如 
-	ref.bib
-	）。
-4.  **调用**: 在正文末尾使用 \bibliographystyle{样式名}\ 和 \bibliography{文件名}\。
+3.  **保存**: 将代码保存为 ${BT}.bib${BT} 文件（例如 ${BT}ref.bib${BT}）。
+4.  **调用**: 在正文末尾使用 ${BT}${BS}bibliographystyle{样式名}${BT} 和 ${BT}${BS}bibliography{文件名}${BT}。
 
 **任务：**
-1. 观察代码顶部的 
-	filecontents
-	模拟的 BibTeX 内容（引用键为 **einstein**）。
+1. 观察代码顶部的 ${BT}filecontents${BT} 模拟的 BibTeX 内容（引用键为 **einstein**）。
 2. 在正文中引用它：${BT}${BS}cite{einstein}${BT}。
 3. 在文档末尾设置样式为 **unsrt** (按出现顺序排序) 且数据源为 **references**。
 `,
